@@ -1,5 +1,6 @@
 # Project Members: 
 i6353203 Mikhail Belov
+i6362407 Vladyslav Dobush
 
 # Cardio Data Simulator
 
