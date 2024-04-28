@@ -66,9 +66,11 @@ java -jar target/target/cardio_generator-1.0-SNAPSHOT.jar --patient-count 100 --
 
 ### UML diagrams
 [UML diagrams](uml_models) folder contains:
-- Class diagram and brief explanation
-- Sequence diagram for Alerts and brief explanation
-- State diagram for Alerts and brief explanation
+- [Alert system](uml_models/AlertSystem) and brief explanation;
+- [Data Storage System](uml_models/DataStorageSystem) and brief explanation;
+- [Patient Identifier System](uml_models/PatientIdentifierSystem) and brief explanation;
+- [Sequence diagram for Alerts](uml_models/SequenceDiagram) and brief explanation;
+- [State diagram for Alerts](uml_models/StateDiagram) and brief explanation.
 
 ## License
 
