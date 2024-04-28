@@ -1,0 +1,7 @@
+Sequence Diagram
+  Sensors on the patient send the data in real time to the DataStorage to keep this data and to the AlertGenerator.
+  AlertGenerator requests previous data of this patient from the storage to detect the trend.
+  DataStorage sends previous data to the AlertGenerator and AlertGenerator analyse the values to decide if there is and Alert.
+  If the AlertGenerator decided that there is an Alert, Alert is sent to the Medical Staff. AlertGenerator analyse futher data 
+  and if values stabilizied, then Alert Resolved.
+  Medical staff should indicate that the Alert is acknowledged and take care of the patient, then them should indicate that alert resolved.
