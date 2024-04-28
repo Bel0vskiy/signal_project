@@ -1,0 +1,7 @@
+State diagram
+  State diagram shows the procces of creating and the whole lifecycle of alerts. 
+  When the system detects abnormal values and checks that is it not an error, alert created.
+  Once alert is created it sends to the medical staff and need to be acknowledged by them.
+  Then alert should be resolved OR automatically, if subsequent patient data shows normal readings continuously
+  for a predefined period, suggesting that the condition has stabilized, OR by medical staff after assessing the patient and perhaps adjusting
+  their treatment, confirming that the alert condition no longer exists.
