@@ -1,0 +1,2 @@
+the pdf files AlertSystem, DataStorageSystem, and PatientIdentifierSystem contain both the uml diagrams and their
+explanation.
