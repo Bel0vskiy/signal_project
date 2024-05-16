@@ -10,16 +10,32 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
 
-
+/**
+ * Reads data from files in a specified directory and processes each line into
+ * PatientRecord objects which are then stored in a List<PatientRecord>.
+ */
 public class Reader implements DataReader {
     private final String path;
 
+    /**
+     * Constructs a Reader object with the specified path.
+     *
+     * @param path the path to the directory containing the data files
+     * @throws IllegalArgumentException if the path is null
+     */
     public Reader(String path) {
         if (path == null) {throw new IllegalArgumentException("Path cannot be null");}
         this.path = path;
         System.out.println(this.path);
     };
 
+    /**
+     * Reads data from files in the directory specified by the path and stores the
+     * parsed {@code PatientRecord} objects in the given {@code DataStorage}.
+     *
+     * @param dataStorage the storage to which the patient data is added
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     public void readData(DataStorage dataStorage) throws IOException {
 
@@ -47,6 +63,12 @@ public class Reader implements DataReader {
         }
     }
 
+    /**
+     * Parses a line of text into a {@code PatientRecord} object.
+     *
+     * @param line the line of text to parse
+     * @return the parsed PatientRecord object
+     */
     private  PatientRecord lineToRecord(String line){
             String[] parts = line.split(",");
 
@@ -54,7 +76,7 @@ public class Reader implements DataReader {
             long timeStamp = Long.parseLong(parts[1].split(":")[1].trim());
             String label = parts[2].split(":")[1].trim();
             String measurementValueString = "";
-            double mesurementValue= 999;
+            double mesurementValue= 999; // default value which would indicate Error Value
 
             switch (label){
 
@@ -95,13 +117,20 @@ public class Reader implements DataReader {
             return record;
     }
 
+
+    /**
+     * The main method demonstrating the usage of the {@code Reader} class.
+     *
+     * @param args command-line arguments
+     * @throws IOException if an I/O error occurs
+     */
     public static void main(String[] args) throws IOException {
         Reader reader = new Reader("/Users/vd/IdeaProjects/signal_project/test.txt");
         DataStorage dataStorage = new DataStorage();
         reader.readData(dataStorage);
 
         Patient patient = new Patient(40);
-        List<PatientRecord> recordsChol = dataStorage.getRecords(40, 0, Long.MAX_VALUE, "Cholesterol");
+        List<PatientRecord> recordsChol = dataStorage.getRecords(20, 0, Long.MAX_VALUE, "ECG");
         for (PatientRecord record : recordsChol) {
             System.out.println(record.getPatientId());
             System.out.println(record.getRecordType());
