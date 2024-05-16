@@ -63,6 +63,16 @@ public class DataStorage {
         if (patient != null) {
             return patient.getRecords(startTime, endTime);
         }
+        System.out.println("Null patient");
+        return new ArrayList<>(); // return an empty list if no patient is found
+    }
+
+    public List<PatientRecord> getRecords(int patientId, long startTime, long endTime, String recordType) {
+        Patient patient = patientMap.get(patientId);
+        if (patient != null) {
+            return patient.getRecords(startTime, endTime, recordType);
+        }
+        System.out.println("Null patient");
         return new ArrayList<>(); // return an empty list if no patient is found
     }
 
