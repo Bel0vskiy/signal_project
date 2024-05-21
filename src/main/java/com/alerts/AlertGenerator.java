@@ -2,6 +2,10 @@ package com.alerts;
 
 import com.data_management.DataStorage;
 import com.data_management.Patient;
+import com.data_management.PatientRecord;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The {@code AlertGenerator} class is responsible for monitoring patient data
@@ -36,6 +40,129 @@ public class AlertGenerator {
      */
     public void evaluateData(Patient patient) {
         // Implementation goes here
+        List<PatientRecord> records = patient.getRecords(0, Long.MAX_VALUE);
+
+        bloodPressureMonitor(records, "systolic",patient.getPatientId());
+        bloodPressureMonitor(records, "diastolic",patient.getPatientId());
+        checkCriticalThresholdAlert(records, "systolic", patient.getPatientId());
+        checkCriticalThresholdAlert(records, "diastolic", patient.getPatientId());
+        bloodSaturationMonitor(records, patient.getPatientId());
+        combinedAlertMonitor(records, patient.getPatientId());
+        ECGMonitor(records, patient.getPatientId());
+        manualAlert(records, patient.getPatientId());
+        }
+    private void bloodPressureMonitor(List<PatientRecord> records, String type, int patientId) {
+        if (records.size() < 3) {
+            return;
+        }
+
+        for (int i = 2; i < records.size(); i++) {
+            double diff1 = records.get(i).getMeasurementValue() - records.get(i-1).getMeasurementValue();
+            double diff2 = records.get(i-1).getMeasurementValue() - records.get(i-2).getMeasurementValue();
+
+            if (diff1 > 10 && diff2 > 10) {
+                triggerAlert(new Alert(String.valueOf(patientId), type + " Increasing Trend Alert", records.get(i).getTimestamp()));
+            } else if (diff1 < -10 && diff2 < -10) {
+                triggerAlert(new Alert(String.valueOf(patientId), type + " Decreasing Trend Alert", records.get(i).getTimestamp()));
+            }
+        }
+    }
+
+    private void checkCriticalThresholdAlert(List<PatientRecord> records, String type, int patientId) {
+        for (PatientRecord record : records) {
+            double value = record.getMeasurementValue();
+            if ("SystolicPressure".equals(type)) {
+                if (value > 180 || value < 90) {
+                    triggerAlert(new Alert(String.valueOf(patientId), type + " Critical Threshold Alert", record.getTimestamp()));
+                }
+            } else if ("DiastolicPressure".equals(type)) {
+                if (value > 120 || value < 60) {
+                    triggerAlert(new Alert(String.valueOf(patientId), type + " Critical Threshold Alert", record.getTimestamp()));
+                }
+            }
+        }
+    }
+
+    private void bloodSaturationMonitor(List<PatientRecord> records, int patientId) {
+        List<PatientRecord> saturationRecords = new ArrayList<>();
+
+        for (PatientRecord record : records) {
+            if ("Saturation".equals(record.getRecordType())) {
+                saturationRecords.add(record);
+            }
+        }
+
+        for (int i = 0; i < saturationRecords.size(); i++) {
+            double value = saturationRecords.get(i).getMeasurementValue();
+            if (value < 92) {
+                triggerAlert(new Alert(String.valueOf(patientId), "Low Saturation Alert", saturationRecords.get(i).getTimestamp()));
+            }
+
+            if (i > 0) {
+                double prevValue = saturationRecords.get(i-1).getMeasurementValue();
+                if (prevValue - value >= 5 && (saturationRecords.get(i).getTimestamp() - saturationRecords.get(i-1).getTimestamp() <= 600000)) {
+                    triggerAlert(new Alert(String.valueOf(patientId), "Rapid Drop Alert", saturationRecords.get(i).getTimestamp()));
+                }
+            }
+        }
+    }
+
+
+    private void combinedAlertMonitor(List<PatientRecord> records, int patientId) {
+        boolean lowSystolic = false;
+        boolean lowSaturation = false;
+
+        for (PatientRecord record : records) {
+            if ("SystolicPressure".equals(record.getRecordType()) && record.getMeasurementValue() < 90) {
+                lowSystolic = true;
+            } else if ("Saturation".equals(record.getRecordType()) && record.getMeasurementValue() < 92) {
+                lowSaturation = true;
+            }
+
+            if (lowSystolic && lowSaturation) {
+                triggerAlert(new Alert(String.valueOf(patientId), "Hypotensive Hypoxemia Alert", record.getTimestamp()));
+                break;
+            }
+        }
+    }
+
+    private void ECGMonitor(List<PatientRecord> records, int patientId) {
+        List<PatientRecord> ecgRecords = new ArrayList<>();
+
+        for (PatientRecord record : records) {
+            if ("ECG".equals(record.getRecordType())) {
+                ecgRecords.add(record);
+            }
+        }
+
+        if (ecgRecords.size() < 5) {
+            return;
+        }
+
+        double sum = 0;
+        for (int i = 0; i < 5; i++) {
+            sum += ecgRecords.get(i).getMeasurementValue();
+        }
+        double avg = sum / 5;
+
+        for (int i = 5; i < ecgRecords.size(); i++) {
+            double value = ecgRecords.get(i).getMeasurementValue();
+            if (value > avg * 1.5) {
+                triggerAlert(new Alert(String.valueOf(patientId), "ECG Abnormal Data Alert", ecgRecords.get(i).getTimestamp()));
+            }
+
+            sum -= ecgRecords.get(i-5).getMeasurementValue();
+            sum += value;
+            avg = sum / 5;
+        }
+    }
+
+    private void manualAlert(List<PatientRecord> records, int patientId) {
+        for (PatientRecord record : records) {
+            if ("Alert".equals(record.getRecordType()) && record.getMeasurementValue() == 1) {
+                triggerAlert(new Alert(String.valueOf(patientId), "Manual Triggered Alert", record.getTimestamp()));
+            }
+        }
     }
 
     /**
@@ -48,5 +175,6 @@ public class AlertGenerator {
      */
     private void triggerAlert(Alert alert) {
         // Implementation might involve logging the alert or notifying staff
+        System.out.println("Alert triggered: " + alert.getCondition() + " for patient " + alert.getPatientId() + " at " + alert.getTimestamp());
     }
 }
