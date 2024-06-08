@@ -37,6 +37,8 @@ public class AlertGenerator {
      * will be triggered.
      *
      * @param patient the patient data to evaluate for alert conditions
+     *
+     *                this method will pass the patient's data through the methods
      */
     public void evaluateData(Patient patient) {
         // Implementation goes here
@@ -51,22 +53,36 @@ public class AlertGenerator {
         ECGMonitor(records, patient.getPatientId());
         manualAlert(records, patient.getPatientId());
         }
+
+    /**
+     * @param records list of patient records
+     * @param type the type will be displayed on the alert
+     * @param patientId the patient ID of the patient whose records are being fed into the monitor
+     * The method will create two different records at diff1 and diff2, they will be subtracted to
+     *                  probe for an increasing or decreasing blood pressure trend
+     */
     private void bloodPressureMonitor(List<PatientRecord> records, String type, int patientId) {
         if (records.size() < 3) {
             return;
         }
 
         for (int i = 2; i < records.size(); i++) {
-            double diff1 = records.get(i).getMeasurementValue() - records.get(i-1).getMeasurementValue();
-            double diff2 = records.get(i-1).getMeasurementValue() - records.get(i-2).getMeasurementValue();
+            double difference = records.get(i).getMeasurementValue() - records.get(i-1).getMeasurementValue();
+            double difference2 = records.get(i-1).getMeasurementValue() - records.get(i-2).getMeasurementValue();
 
-            if (diff1 > 10 && diff2 > 10) {
+            if (difference > 10 && difference2 > 10) {
                 triggerAlert(new Alert(String.valueOf(patientId), type + " Increasing Trend Alert", records.get(i).getTimestamp()));
-            } else if (diff1 < -10 && diff2 < -10) {
+            } else if (difference < -10 && difference2 < -10) {
                 triggerAlert(new Alert(String.valueOf(patientId), type + " Decreasing Trend Alert", records.get(i).getTimestamp()));
             }
         }
     }
+    /**
+     * @param records list of patient records
+     * @param type the type will be displayed on the alert
+     * @param patientId the patient ID of the patient whose records are being fed into the monitor
+     * The method will check if the systolic and diastolic pressure meet dangerous threshold conditions
+     */
 
     private void checkCriticalThresholdAlert(List<PatientRecord> records, String type, int patientId) {
         for (PatientRecord record : records) {
@@ -82,6 +98,11 @@ public class AlertGenerator {
             }
         }
     }
+    /**
+     * @param records list of patient records
+     * @param patientId the patient ID of the patient whose records are being fed into the monitor
+     * The method will check if the blood saturation is low or rapidly dropping which will trigger an alert
+     */
 
     private void bloodSaturationMonitor(List<PatientRecord> records, int patientId) {
         List<PatientRecord> saturationRecords = new ArrayList<>();
@@ -107,6 +128,13 @@ public class AlertGenerator {
         }
     }
 
+    /**
+     * @param records list of patient records
+     * @param patientId the patient ID of the patient whose records are being fed into the monitor
+     * This method monitors the systolic pressure and the blood oxygen saturation
+     *                  if both meet a threshold a combined alert is triggered
+     */
+
 
     private void combinedAlertMonitor(List<PatientRecord> records, int patientId) {
         boolean lowSystolic = false;
@@ -125,6 +153,11 @@ public class AlertGenerator {
             }
         }
     }
+    /**
+     * @param records list of patient records
+     * @param patientId the patient ID of the patient whose records are being fed into the monitor
+     * The method will monitor the patient's ECG readings, it will trigger an alert if the readings meet a certain condition
+     */
 
     private void ECGMonitor(List<PatientRecord> records, int patientId) {
         List<PatientRecord> ecgRecords = new ArrayList<>();
@@ -156,6 +189,12 @@ public class AlertGenerator {
             avg = sum / 5;
         }
     }
+
+    /**
+     * @param records list of patient records
+     * @param patientId the patient ID of the patient whose records are being fed into the monitor
+     * The method will check if hospital staff triggered an alert manually
+     */
 
     private void manualAlert(List<PatientRecord> records, int patientId) {
         for (PatientRecord record : records) {
