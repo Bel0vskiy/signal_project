@@ -128,16 +128,18 @@ public class Reader implements DataReader {
         Reader reader = new Reader("/Users/vd/IdeaProjects/signal_project/test.txt");
         DataStorage dataStorage = new DataStorage();
         reader.readData(dataStorage);
+        List<PatientRecord> records = dataStorage.getRecords(20, 0, Long.MAX_VALUE);
+        System.out.println(records.size());
 
-        Patient patient = new Patient(40);
-        List<PatientRecord> recordsChol = dataStorage.getRecords(20, 0, Long.MAX_VALUE, "ECG");
-        for (PatientRecord record : recordsChol) {
-            System.out.println(record.getPatientId());
-            System.out.println(record.getRecordType());
-            System.out.println(record.getTimestamp());
-            System.out.println(record.getMeasurementValue());
-            System.out.println("\n");
-        }
+//        Patient patient = new Patient(40);
+//        List<PatientRecord> recordsChol = dataStorage.getRecords(20, 0, Long.MAX_VALUE, "ECG");
+//        for (PatientRecord record : recordsChol) {
+//            System.out.println(record.getPatientId());
+//            System.out.println(record.getRecordType());
+//            System.out.println(record.getTimestamp());
+//            System.out.println(record.getMeasurementValue());
+//            System.out.println("\n");
+//        }
 
     }
 }
