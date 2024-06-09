@@ -36,7 +36,7 @@ public class Patient {
      *                         milliseconds since UNIX epoch
      */
     public void addRecord(double measurementValue, String recordType, long timestamp) {
-        PatientRecord record = new PatientRecord(this.patientId, measurementValue, recordType, timestamp);
+        PatientRecord record = new PatientRecord(this.patientId, measurementValue, recordType, timestamp, 1714376789050L);
         this.patientRecords.add(record);
     }
 

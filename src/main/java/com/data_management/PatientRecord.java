@@ -17,15 +17,16 @@ public class PatientRecord {
 
     /**
      * Constructs a new patient record with specified details.
-     * 
+     *
      * @param patientId        the unique identifier for the patient
      * @param measurementValue the numerical value of the recorded measurement
      * @param recordType       the type of measurement (e.g., "ECG", "Blood
      *                         Pressure")
      * @param timestamp        the time at which the measurement was recorded, in
      *                         milliseconds since epoch
+     * @param l
      */
-    public PatientRecord(int patientId, double measurementValue, String recordType, long timestamp) {
+    public PatientRecord(int patientId, double measurementValue, String recordType, long timestamp, long l) {
         this.patientId = patientId;
         this.measurementValue = measurementValue;
         this.recordType = recordType;
