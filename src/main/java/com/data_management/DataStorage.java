@@ -3,7 +3,7 @@ package com.data_management;
 import java.io.IOException;
 import java.util.*;
 
-import com.alerts.AlertGenerator;
+import com.alerts.Generator.AlertGenerator;
 
 /**
  * Manages storage and retrieval of patient data within a healthcare monitoring

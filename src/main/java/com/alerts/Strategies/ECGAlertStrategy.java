@@ -1,6 +1,5 @@
 package com.alerts.Strategies;
 
-import com.alerts.AlertStrategy;
 import com.alerts.Factories.ECGAlertFactory;
 import com.data_management.PatientRecord;
 

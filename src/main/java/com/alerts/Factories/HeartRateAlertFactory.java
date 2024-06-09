@@ -1,6 +1,5 @@
 package com.alerts.Factories;
 
-import com.alerts.AlertFactory;
 import com.alerts.Alerts.HeartRateAlert;
 
 public class HeartRateAlertFactory extends AlertFactory {

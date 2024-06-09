@@ -1,7 +1,6 @@
 package com.alerts.Factories;
 
-import com.alerts.Alert;
-import com.alerts.AlertFactory;
+import com.alerts.Alerts.Alert;
 import com.alerts.Alerts.ECGAlert;
 
 public class ECGAlertFactory extends AlertFactory {

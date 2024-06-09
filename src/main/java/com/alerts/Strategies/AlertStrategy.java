@@ -1,4 +1,4 @@
-package com.alerts;
+package com.alerts.Strategies;
 
 import com.data_management.PatientRecord;
 

@@ -3,15 +3,6 @@ package data_management;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.alerts.AlertGenerator;
-import com.data_management.DataStorage;
-import com.data_management.PatientRecord;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
 public class AlertGeneratorTest {
 
 //    private DataStorage storage;

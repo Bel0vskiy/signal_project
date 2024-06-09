@@ -1,7 +1,6 @@
 package com.alerts.Strategies;
 
-import com.alerts.AlertFactory;
-import com.alerts.AlertStrategy;
+import com.alerts.Factories.AlertFactory;
 import com.alerts.Factories.HeartRateAlertFactory;
 import com.data_management.PatientRecord;
 

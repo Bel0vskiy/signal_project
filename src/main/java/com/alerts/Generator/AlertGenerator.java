@@ -1,5 +1,6 @@
-package com.alerts;
+package com.alerts.Generator;
 
+import com.alerts.Alerts.Alert;
 import com.alerts.Factories.*;
 import com.alerts.Strategies.*;
 import com.data_management.DataStorage;
@@ -39,12 +40,13 @@ public class AlertGenerator {
      */
     public void evaluateData(Patient patient) {
         List<PatientRecord> records = patient.getRecords(0, Long.MAX_VALUE);
-
+        //initialize the alerts
         AlertStrategy bloodPressureStrategy = new BloodPressureStrategy(new BloodPressureAlertFactory());
         AlertStrategy oxygenSaturationStrategy = new OxygenSaturationStrategy(new BloodOxygenLevelAlertFactory());
         AlertStrategy combinedAlertStrategy = new CombinedAlertStrategy();
         AlertStrategy heartRateStrategy = new HeartRateStrategy(new HeartRateAlertFactory());
         AlertStrategy trend = new TrendAlertStrategy();
+        //run the data through the alerts
         trend.checkAlert(records, patient.getPatientId());
         bloodPressureStrategy.checkAlert(records, patient.getPatientId());
         oxygenSaturationStrategy.checkAlert(records, patient.getPatientId());

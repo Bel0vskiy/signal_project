@@ -1,8 +1,5 @@
 package com.alerts.Strategies;
 
-import com.alerts.Alert;
-import com.alerts.AlertStrategy;
-import com.alerts.Alerts.BloodPressureAlert;
 import com.alerts.Factories.BloodPressureAlertFactory;
 import com.data_management.PatientRecord;
 
