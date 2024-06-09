@@ -1,9 +1,8 @@
 package com.data_management;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
+
 import com.alerts.AlertGenerator;
 
 /**
@@ -106,10 +105,19 @@ public class DataStorage {
      * 
      * @param args command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        String filePath = "test.txt";
         // DataReader is not defined in this scope, should be initialized appropriately.
         // DataReader reader = new SomeDataReaderImplementation("path/to/data");
+        if (args.length > 1 && args[1].equals("--input") && (args[2].startsWith("file:"))) {
+            filePath = args[2].substring(5);
+        }
+
+        System.out.println(filePath);
+
+        Reader reader = new Reader(filePath);
         DataStorage storage = new DataStorage();
+        reader.readData(storage);
 
         // Assuming the reader has been properly initialized and can read data into the
         // storage
@@ -122,6 +130,9 @@ public class DataStorage {
                     ", Type: " + record.getRecordType() +
                     ", Data: " + record.getMeasurementValue() +
                     ", Timestamp: " + record.getTimestamp());
+            System.out.println(args[2].substring(5));
+            System.out.println(filePath);
+            System.out.println(Arrays.toString(args));
         }
 
         // Initialize the AlertGenerator with the storage

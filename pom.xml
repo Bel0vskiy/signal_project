@@ -56,7 +56,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.cardio_generator.HealthDataSimulator</mainClass>
+                    <mainClass>com.main.Main</mainClass>
                 </configuration>
             </plugin>
             <plugin>
