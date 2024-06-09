@@ -20,13 +20,13 @@ public class AlertFactoryTests {
 
     @BeforeEach
     public void setUp() {
-        storage = new DataStorage();
+        storage = DataStorage.getInstance();
     }
 
     @Test
     public void testBloodPressureMonitorIncreasingTrendSystolic() {
         Reader reader = new Reader("test.txt");
-        DataStorage storage = new DataStorage();
+        DataStorage storage = DataStorage.getInstance();
 
         AlertGenerator generator = new AlertGenerator(storage);
 
@@ -116,7 +116,7 @@ public class AlertFactoryTests {
 
     @Test
     public void testCheckCriticalThresholdAlertSystolic() {
-        DataStorage storage = new DataStorage();
+        DataStorage storage = DataStorage.getInstance();
 
         storage.addPatientData(100, 130.0, "SystolicPressure", 1714376789050L);
         storage.addPatientData(100, 110.0, "SystolicPressure", 1714376789051L);

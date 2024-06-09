@@ -13,13 +13,19 @@ import com.alerts.AlertGenerator;
  */
 public class DataStorage {
     private Map<Integer, Patient> patientMap; // Stores patient objects indexed by their unique patient ID.
+    private static DataStorage instance; // Single instance of DataStorage
 
-    /**
-     * Constructs a new instance of DataStorage, initializing the underlying storage
-     * structure.
-     */
-    public DataStorage() {
+    // Private constructor to prevent instantiation from other classes
+    private DataStorage() {
         this.patientMap = new HashMap<>();
+    }
+
+    // Static method to provide access to the singleton instance
+    public static synchronized DataStorage getInstance() {
+        if (instance == null) {
+            instance = new DataStorage();
+        }
+        return instance;
     }
 
     /**
@@ -130,9 +136,6 @@ public class DataStorage {
                     ", Type: " + record.getRecordType() +
                     ", Data: " + record.getMeasurementValue() +
                     ", Timestamp: " + record.getTimestamp());
-            System.out.println(args[2].substring(5));
-            System.out.println(filePath);
-            System.out.println(Arrays.toString(args));
         }
 
         // Initialize the AlertGenerator with the storage

@@ -55,7 +55,7 @@ public class AlertGenerator {
 
     public static void main(String[] args) {
         Reader reader = new Reader("test.txt");
-        DataStorage storage = new DataStorage();
+        DataStorage storage = DataStorage.getInstance();
 
         AlertGenerator generator = new AlertGenerator(storage);
 

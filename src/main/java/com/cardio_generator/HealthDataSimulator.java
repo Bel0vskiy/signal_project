@@ -27,6 +27,21 @@ import java.util.ArrayList;
 
 public class HealthDataSimulator {
 
+    private static HealthDataSimulator instance; // Single instance of HealthDataSimulator
+
+    // Private constructor to prevent instantiation from other classes
+    private HealthDataSimulator() {
+        // Initialize any required resources here
+    }
+
+    // Static method to provide access to the singleton instance
+    public static synchronized HealthDataSimulator getInstance() {
+        if (instance == null) {
+            instance = new HealthDataSimulator();
+        }
+        return instance;
+    }
+
     private static int patientCount = 50; // Default number of patients
     private static ScheduledExecutorService scheduler;
     private static OutputStrategy outputStrategy = new ConsoleOutputStrategy(); // Default output strategy

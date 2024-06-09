@@ -47,7 +47,7 @@ public class Reader implements DataReader {
                 try (Stream<String> lines = Files.lines(file)) {
                     lines.forEach(line -> {
                         try {
-                            PatientRecord record = lineToRecord(line);
+                            PatientRecord record = DataReader.lineToRecord(line);
                             dataStorage.addPatientData(record.getPatientId(), record.getMeasurementValue(), record.getRecordType(), record.getTimestamp());
                         } catch (Exception e) {
                             System.err.println("Failed to parse or add data to storage: " + e.getMessage());
@@ -66,53 +66,53 @@ public class Reader implements DataReader {
      * @param line the line of text to parse
      * @return the parsed PatientRecord object
      */
-    private  PatientRecord lineToRecord(String line){
-            String[] parts = line.split(",");
-
-            int patientId = Integer.parseInt(parts[0].split(":")[1].trim());
-            long timeStamp = Long.parseLong(parts[1].split(":")[1].trim());
-            String label = parts[2].split(":")[1].trim();
-            String measurementValueString = "";
-            double mesurementValue= 999; // default value which would indicate Error Value
-
-            switch (label){
-
-                default:
-                    System.out.println("Label not found  -  "+label);
-                    break;
-                case "Alert":
-                    // records alert triggered as 1 and alert resolved as 0;
-                    measurementValueString = parts[3].split(":")[1].trim();
-                    if (measurementValueString.equals("triggered")){mesurementValue = 1;}
-                    if (measurementValueString.equals("resolved")){mesurementValue = 0;}
-                    break;
-                case "Cholesterol":
-                    mesurementValue= Double.parseDouble(parts[1].split(":")[1].trim());
-                    break;
-                case "DiastolicPressure":
-                    mesurementValue= Double.parseDouble(parts[1].split(":")[1].trim());
-                    break;
-                case "ECG":
-                    mesurementValue= Double.parseDouble(parts[1].split(":")[1].trim());
-                    break;
-                case "RedBloodCells":
-                    mesurementValue= Double.parseDouble(parts[1].split(":")[1].trim());
-                    break;
-                case "Saturation":
-                    measurementValueString = parts[3].split(":")[1].split("%")[0].trim();
-                    mesurementValue = Double.parseDouble(measurementValueString);
-                    break;
-                case "SystolicPressure":
-                    mesurementValue= Double.parseDouble(parts[1].split(":")[1].trim());
-                    break;
-                case "WhiteBloodCells":
-                    mesurementValue= Double.parseDouble(parts[1].split(":")[1].trim());
-                    break;
-
-            }
-            PatientRecord record = new PatientRecord(patientId, mesurementValue, label, timeStamp, 1714376789050L);
-            return record;
-    }
+//    private  PatientRecord lineToRecord(String line){
+//            String[] parts = line.split(",");
+//
+//            int patientId = Integer.parseInt(parts[0].split(":")[1].trim());
+//            long timeStamp = Long.parseLong(parts[1].split(":")[1].trim());
+//            String label = parts[2].split(":")[1].trim();
+//            String measurementValueString = "";
+//            double mesurementValue= 999; // default value which would indicate Error Value
+//
+//            switch (label){
+//
+//                default:
+//                    System.out.println("Label not found  -  "+label);
+//                    break;
+//                case "Alert":
+//                    // records alert triggered as 1 and alert resolved as 0;
+//                    measurementValueString = parts[3].split(":")[1].trim();
+//                    if (measurementValueString.equals("triggered")){mesurementValue = 1;}
+//                    if (measurementValueString.equals("resolved")){mesurementValue = 0;}
+//                    break;
+//                case "Cholesterol":
+//                    mesurementValue= Double.parseDouble(parts[1].split(":")[1].trim());
+//                    break;
+//                case "DiastolicPressure":
+//                    mesurementValue= Double.parseDouble(parts[1].split(":")[1].trim());
+//                    break;
+//                case "ECG":
+//                    mesurementValue= Double.parseDouble(parts[1].split(":")[1].trim());
+//                    break;
+//                case "RedBloodCells":
+//                    mesurementValue= Double.parseDouble(parts[1].split(":")[1].trim());
+//                    break;
+//                case "Saturation":
+//                    measurementValueString = parts[3].split(":")[1].split("%")[0].trim();
+//                    mesurementValue = Double.parseDouble(measurementValueString);
+//                    break;
+//                case "SystolicPressure":
+//                    mesurementValue= Double.parseDouble(parts[1].split(":")[1].trim());
+//                    break;
+//                case "WhiteBloodCells":
+//                    mesurementValue= Double.parseDouble(parts[1].split(":")[1].trim());
+//                    break;
+//
+//            }
+//            PatientRecord record = new PatientRecord(patientId, mesurementValue, label, timeStamp, 1714376789050L);
+//            return record;
+//    }
 
 
     /**
@@ -123,7 +123,7 @@ public class Reader implements DataReader {
      */
     public static void main(String[] args) throws IOException {
         Reader reader = new Reader("/Users/vd/IdeaProjects/signal_project/test.txt");
-        DataStorage dataStorage = new DataStorage();
+        DataStorage dataStorage = DataStorage.getInstance();
         reader.readData(dataStorage);
         List<PatientRecord> records = dataStorage.getRecords(20, 0, Long.MAX_VALUE);
         System.out.println(records.size());

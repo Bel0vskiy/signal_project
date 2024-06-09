@@ -17,7 +17,7 @@ class DataStorageTest {
         // TODO Perhaps you can implement a mock data reader to mock the test data?
         // DataReader reader
         Reader reader = new Reader("test.txt");
-        DataStorage storage = new DataStorage();
+        DataStorage storage = DataStorage.getInstance();
         reader.readData(storage);
 
 
