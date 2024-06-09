@@ -16,7 +16,7 @@ class DataStorageTest {
     void testAddAndGetRecords() throws Exception {
         // TODO Perhaps you can implement a mock data reader to mock the test data?
         // DataReader reader
-        Reader reader = new Reader("/Users/vd/IdeaProjects/signal_project/test.txt");
+        Reader reader = new Reader("test.txt");
         DataStorage storage = new DataStorage();
 //        reader.readData(storage);
 
