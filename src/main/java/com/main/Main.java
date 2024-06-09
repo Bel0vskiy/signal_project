@@ -15,6 +15,8 @@ public class Main {
             case "HealthDataSimulator":
                 HealthDataSimulator.main(Arrays.copyOfRange(args, 1, args.length));
                 break;
+            default:
+                HealthDataSimulator.main(new String[]{"console"});
         }
 //        if (args.length > 0 && args[0].equals("DataStorage")){
 //            DataStorage.main(args);

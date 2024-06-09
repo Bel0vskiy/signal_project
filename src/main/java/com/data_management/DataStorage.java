@@ -51,6 +51,19 @@ public class DataStorage {
     }
 
     /**
+     * Add a PatientRecord to the DataStorage
+     * @param record        the PatientRecord we want to add to the DataStorage
+     */
+    public void AddPatientRecord(PatientRecord record){
+        Patient patient = patientMap.get(record.getPatientId());
+        if (patient == null) {
+            patient = new Patient(record.getPatientId());
+            patientMap.put(record.getPatientId(), patient);
+        }
+        patient.addRecord(record.getMeasurementValue(), record.getRecordType(), record.getTimestamp());
+    }
+
+    /**
      * Retrieves a list of PatientRecord objects for a specific patient, filtered by
      * a time range.
      *
